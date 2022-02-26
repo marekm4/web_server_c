@@ -45,7 +45,8 @@ int main() {
         int content_length = strlen(emojis) + 24;
         sprintf(buffer, "HTTP/1.1 200 OK\nContent-Length: %d\n\n<meta charset=\"utf-8\">\n%s\n", content_length,
                 emojis);
-        write(client_fd, buffer, strlen(buffer));
+        if (write(client_fd, buffer, strlen(buffer)) < 0)
+            perror("Write");
 
         close(client_fd);
     }
