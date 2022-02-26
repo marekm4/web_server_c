@@ -25,7 +25,7 @@ void web(int fd) {
         buffer[ret] = 0;        /* terminate the buffer */
     else buffer[0] = 0;
 
-    (void) sprintf(buffer, "HTTP/1.1 200 OK\nContent-Length: 34\n\n<meta charset=\"utf-8\">\n%s\n", s); /* Header + a blank line */
+    (void) sprintf(buffer, "HTTP/1.1 200 OK\nContent-Length: %ld\n\n<meta charset=\"utf-8\">\n%s\n", strlen(s) + 24, s); /* Header + a blank line */
     (void) write(fd, buffer, strlen(buffer));
 
     sleep(1);    /* allow socket to drain before signalling the socket is closed */
