@@ -124,7 +124,7 @@ int main(int argc, char **argv)
 {
     char s[] = {0xe2, 0x9d, 0xa4, 0xef, 0xb8, 0x8f, 0xf0, 0x9f, 0x8d, 0x8b, 0x00};
     printf("%s\n", s);
-    int i, port, pid, listenfd, socketfd, hit;
+    int port, pid, listenfd, socketfd, hit;
     socklen_t length;
     static struct sockaddr_in cli_addr; /* static = initialised to zeros */
     static struct sockaddr_in serv_addr; /* static = initialised to zeros */
@@ -132,21 +132,21 @@ int main(int argc, char **argv)
     (void)signal(SIGCLD, SIG_IGN); /* ignore child death */
     /* setup the network socket */
     if((listenfd = socket(AF_INET, SOCK_STREAM,0)) <0)
-        logger(ERROR, "system call","socket",0);
-    port = atoi(argv[1]);
+        perror("Socket");
+    port = atoi(getenv("PORT"));
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     serv_addr.sin_port = htons(port);
     if(bind(listenfd, (struct sockaddr *)&serv_addr,sizeof(serv_addr)) <0)
-        logger(ERROR,"system call","bind",0);
+        perror("Bind");
     if( listen(listenfd,64) <0)
-        logger(ERROR,"system call","listen",0);
+        perror("Listen");
     for(hit=1; ;hit++) {
         length = sizeof(cli_addr);
         if((socketfd = accept(listenfd, (struct sockaddr *)&cli_addr, &length)) < 0)
-            logger(ERROR,"system call","accept",0);
+            perror("Accept");
         if((pid = fork()) < 0) {
-            logger(ERROR,"system call","fork",0);
+            perror("Fork");
         }
         else {
             if(pid == 0) { 	/* child */
