@@ -5,7 +5,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#define BUFSIZE 65536
+#define BUFFER_SIZE 8192
 
 int main() {
     int server_fd, client_fd;
@@ -35,16 +35,11 @@ int main() {
         if ((client_fd = accept(server_fd, (struct sockaddr *) &client_address, &client_address_length)) < 0)
             perror("Accept");
 
-        long ret;
-        static char buffer[BUFSIZE + 1]; /* static so zero filled */
+        static char buffer[BUFFER_SIZE + 1];
 
-        ret = read(client_fd, buffer, BUFSIZE);    /* read Web request in one go */
-        if (ret == 0 || ret == -1) {    /* read failure stop now */
+        if (read(client_fd, buffer, BUFFER_SIZE) < 0)
             perror("Read");
-        }
-        if (ret > 0 && ret < BUFSIZE)    /* return code is valid chars */
-            buffer[ret] = 0;        /* terminate the buffer */
-        else buffer[0] = 0;
+        buffer[0] = 0;
 
         char emojis[] = {0xe2, 0x9d, 0xa4, 0xef, 0xb8, 0x8f, 0xf0, 0x9f, 0x8d, 0x8b, 0x00};
         int content_length = strlen(emojis) + 24;
