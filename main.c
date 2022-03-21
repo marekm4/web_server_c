@@ -5,7 +5,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#define BUFFER_SIZE 8192
+char response[] = "HTTP/1.1 200 OK\r\nContent-Length: 34\r\n\r\n<meta charset=\"utf-8\">\n\xe2\x9d\xa4\xef\xb8\x8f\xf0\x9f\x8d\x8b\n";
 
 int main() {
     int server_fd, client_fd;
@@ -27,7 +27,7 @@ int main() {
     if (bind(server_fd, (struct sockaddr *) &server_address, sizeof(server_address)) < 0)
         perror("Bind");
 
-    if (listen(server_fd, 64) < 0)
+    if (listen(server_fd, 128) < 0)
         perror("Listen");
 
     while (1) {
@@ -35,17 +35,7 @@ int main() {
         if ((client_fd = accept(server_fd, (struct sockaddr *) &client_address, &client_address_length)) < 0)
             perror("Accept");
 
-        static char buffer[BUFFER_SIZE + 1];
-
-        if (read(client_fd, buffer, BUFFER_SIZE) < 0)
-            perror("Read");
-        buffer[0] = 0;
-
-        char emojis[] = {0xe2, 0x9d, 0xa4, 0xef, 0xb8, 0x8f, 0xf0, 0x9f, 0x8d, 0x8b, 0x00};
-        int content_length = strlen(emojis) + 24;
-        sprintf(buffer, "HTTP/1.1 200 OK\r\nContent-Length: %d\r\n\r\n<meta charset=\"utf-8\">\n%s\n", content_length,
-                emojis);
-        if (write(client_fd, buffer, strlen(buffer)) < 0)
+        if (write(client_fd, response, strlen(response)) < 0)
             perror("Write");
 
         close(client_fd);
