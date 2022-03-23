@@ -5,7 +5,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-char response[] = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 107\r\n\r\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\xf0\x9f\x90\xa7\xe2\x9d\xa4\xef\xb8\x8f\xf0\x9f\x8d\x8b\n";
+char response[] = "HTTP/1.1 200 OK\r\nContent-Length: 3\r\n\r\n<3\n";
 
 int main() {
     int server_fd, client_fd;
