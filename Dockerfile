@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim as builder
+FROM debian as builder
 RUN apt-get update && apt-get install gcc -y
 COPY main.c main.c
 RUN gcc -O3 -static -o main main.c
