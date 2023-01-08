@@ -1,9 +1,5 @@
-FROM debian as builder
-RUN apt-get update && apt-get install gcc -y
+FROM debian
+RUN apt-get update && apt-get install -y build-essential
 COPY main.c main.c
-RUN gcc -O3 -static -o main main.c
-
-FROM scratch
-ENV PORT=8080
-COPY --from=builder main main
-ENTRYPOINT ["/main"]
+RUN make main
+CMD ["./main"]
