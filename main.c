@@ -10,7 +10,8 @@ char template[] = "HTTP/1.1 200 OK\r\nContent-Length: %d\r\nContent-Type: text/h
 
 int main() {
     char *response;
-    asprintf(&response, template, strlen(content) + 1, content);
+    if (asprintf(&response, template, strlen(content) + 1, content) < 0)
+        perror("Response");
 
     int server_fd, client_fd;
     static struct sockaddr_in client_address;
