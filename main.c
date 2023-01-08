@@ -5,9 +5,13 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-char response[] = "HTTP/1.1 200 OK\r\nContent-Length: 12\r\nContent-Type: text/html; charset=utf-8\r\n\r\n\xf0\x9f\x8f\xae\xf0\x9f\x8f\xb7\xef\xb8\x8f\n";
+char content[] = "\xf0\x9f\x8f\xae";
+char template[] = "HTTP/1.1 200 OK\r\nContent-Length: %d\r\nContent-Type: text/html; charset=utf-8\r\n\r\n%s\n";
 
 int main() {
+    char *response;
+    asprintf(&response, template, strlen(content) + 1, content);
+
     int server_fd, client_fd;
     static struct sockaddr_in client_address;
     static struct sockaddr_in server_address;
