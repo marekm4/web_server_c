@@ -1,5 +1,7 @@
-FROM debian
-RUN apt-get update && apt-get install -y build-essential
+FROM gcc as builder
 COPY main.c main.c
-RUN make main
-CMD ["./main"]
+RUN gcc -Os -static -o main main.c
+
+FROM scratch
+COPY --from=builder main main
+CMD ["/main"]
