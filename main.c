@@ -5,7 +5,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-char content[] = "\xf0\x9f\x8f\xae";
+char content[] = "\xf0\x9f\x8e\x93";
 char template[] = "HTTP/1.1 200 OK\r\nContent-Length: %d\r\nContent-Type: text/html; charset=utf-8\r\n\r\n%s\n";
 
 int main() {
