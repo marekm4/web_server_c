@@ -5,10 +5,23 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-char content[] = "\xf0\x9f\x8f\x85\xf0\x9f\x8e\x93\xf0\x9f\x8f\xae\n";
 char template[] = "HTTP/1.1 200 OK\r\nContent-Length: %d\r\nContent-Type: text/html; charset=utf-8\r\n\r\n%s";
 
 int main() {
+    FILE *file;
+    if ((file = fopen("index.html", "r")) == NULL)
+        perror("Content");
+    long length;
+    fseek(file, 0, SEEK_END);
+    length = ftell(file);
+    fseek(file, 0, SEEK_SET);
+    char *content;
+    if ((content = malloc(length + 1)) == NULL)
+        perror("Malloc");
+    fread(content, 1, length, file);
+    content[length] = 0;
+    fclose(file);
+
     char *response;
     if (asprintf(&response, template, strlen(content), content) < 0)
         perror("Response");
