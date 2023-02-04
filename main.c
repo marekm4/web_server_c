@@ -5,12 +5,12 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-char content[] = "\xf0\x9f\x8e\x93";
-char template[] = "HTTP/1.1 200 OK\r\nContent-Length: %d\r\nContent-Type: text/html; charset=utf-8\r\n\r\n%s\n";
+char content[] = "\xf0\x9f\x8f\x85\xf0\x9f\x8e\x93\xf0\x9f\x8f\xae\n";
+char template[] = "HTTP/1.1 200 OK\r\nContent-Length: %d\r\nContent-Type: text/html; charset=utf-8\r\n\r\n%s";
 
 int main() {
     char *response;
-    if (asprintf(&response, template, strlen(content) + 1, content) < 0)
+    if (asprintf(&response, template, strlen(content), content) < 0)
         perror("Response");
 
     int server_fd, client_fd;
