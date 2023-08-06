@@ -8,4 +8,4 @@ Minimal single-threaded web server written in C
 ```PORT=8080 ./main```
 
 ### demo
-https://marekm4.com/
+https://c.marekm4.com/
