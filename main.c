@@ -27,10 +27,10 @@ int main() {
         perror("Response");
 
     int server_fd, client_fd;
-    static struct sockaddr_in client_address;
-    static struct sockaddr_in server_address;
+    static struct sockaddr_in6 client_address;
+    static struct sockaddr_in6 server_address;
 
-    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    if ((server_fd = socket(AF_INET6, SOCK_STREAM, 0)) < 0)
         perror("Socket");
 
     int one = 1;
@@ -38,9 +38,9 @@ int main() {
         perror("Option");
 
     int port = atoi(getenv("PORT"));
-    server_address.sin_family = AF_INET;
-    server_address.sin_addr.s_addr = htonl(INADDR_ANY);
-    server_address.sin_port = htons(port);
+    server_address.sin6_family = AF_INET6;
+    server_address.sin6_addr = in6addr_any;
+    server_address.sin6_port = htons(port);
 
     if (bind(server_fd, (struct sockaddr *) &server_address, sizeof(server_address)) < 0)
         perror("Bind");
