@@ -49,6 +49,7 @@ int main() {
     if (listen(server_fd, 128) < 0)
         perror("Listen");
 
+    char buf[256];
     while (1) {
         socklen_t client_address_length = sizeof(client_address);
         if ((client_fd = accept(server_fd, (struct sockaddr *) &client_address, &client_address_length)) < 0)
@@ -56,6 +57,12 @@ int main() {
 
         if (write(client_fd, response, strlen(response)) < 0)
             perror("Write");
+
+        if (shutdown(client_fd, SHUT_WR) < 0)
+            perror("Shutdown");
+
+        while(read(client_fd, buf, 256) > 0)
+            ;
 
         close(client_fd);
     }
