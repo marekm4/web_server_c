@@ -8,7 +8,7 @@
 
 char template[] = "HTTP/1.1 200 OK\r\nContent-Length: %d\r\nContent-Type: text/html; charset=utf-8\r\n\r\n%s";
 
-int main() {
+int main(void) {
     FILE *file;
     if ((file = fopen("index.html", "r")) == NULL)
         perror("Content");
