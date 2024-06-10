@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -66,7 +67,7 @@ int main(void) {
         do {
             if ((n = read(client_fd, buf, BUFFER)) < 0)
                 perror("Read");
-        } while(n > 0);
+        } while (n > 0);
 
         close(client_fd);
     }
