@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+#define BUFFER 256
 char template[] = "HTTP/1.1 200 OK\r\nContent-Length: %d\r\nContent-Type: text/html; charset=utf-8\r\n\r\n%s";
 
 int main(void) {
@@ -49,7 +50,7 @@ int main(void) {
     if (listen(server_fd, 128) < 0)
         perror("Listen");
 
-    char buf[256];
+    char buf[BUFFER];
     while (1) {
         socklen_t client_address_length = sizeof(client_address);
         if ((client_fd = accept(server_fd, (struct sockaddr *) &client_address, &client_address_length)) < 0)
@@ -61,8 +62,11 @@ int main(void) {
         if (shutdown(client_fd, SHUT_WR) < 0)
             perror("Shutdown");
 
-        while(read(client_fd, buf, 256) > 0)
-            ;
+        int n;
+        do {
+            if ((n = read(client_fd, buf, BUFFER)) < 0)
+                perror("Read");
+        } while(n > 0);
 
         close(client_fd);
     }
