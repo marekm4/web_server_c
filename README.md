@@ -14,4 +14,4 @@ Minimal single-threaded web server written in C
 ```docker run --rm --init -e PORT=8080 -p 8080:8080 web_server_c```
 
 ### demo
-https://peapod.marekm4.com/
+https://marekm4.com/
