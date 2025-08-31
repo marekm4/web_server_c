@@ -1,5 +1,5 @@
 # web_server_c
-Minimal single-threaded web server written in C
+Minimal multithreaded web server written in C
 
 ### compile
 ```make main```

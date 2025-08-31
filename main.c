@@ -57,17 +57,24 @@ int main(void) {
         if ((client_fd = accept(server_fd, (struct sockaddr *) &client_address, &client_address_length)) < 0)
             perror("Accept");
 
-        if (write(client_fd, response, strlen(response)) < 0)
-            perror("Write");
+        if (!fork()) {
+            close(server_fd);
 
-        if (shutdown(client_fd, SHUT_WR) < 0)
-            perror("Shutdown");
+            if (write(client_fd, response, strlen(response)) < 0)
+                perror("Write");
 
-        int n;
-        do {
-            if ((n = read(client_fd, buf, BUFFER)) < 0)
-                perror("Read");
-        } while (n > 0);
+            if (shutdown(client_fd, SHUT_WR) < 0)
+                perror("Shutdown");
+
+            int n;
+            do {
+                if ((n = read(client_fd, buf, BUFFER)) < 0)
+                    perror("Read");
+            } while (n > 0);
+
+            close(client_fd);
+            exit(EXIT_SUCCESS);
+        }
 
         close(client_fd);
     }
