@@ -6,11 +6,22 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <signal.h>
 
 #define BUFFER 256
 char template[] = "HTTP/1.1 %d OK\r\nContent-Length: %d\r\nContent-Type: text/html; charset=utf-8\r\n\r\n%s";
 
+void sigchld_handler(int s) {
+    while (waitpid(-1, NULL, WNOHANG) > 0);
+}
+
 int main(void) {
+    struct sigaction sa;
+    sa.sa_handler = sigchld_handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESTART;
+    sigaction(SIGCHLD, &sa, NULL);
+
     FILE *file;
     if ((file = fopen("index.html", "r")) == NULL)
         perror("Content");
