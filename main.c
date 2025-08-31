@@ -8,7 +8,7 @@
 #include <netinet/in.h>
 
 #define BUFFER 256
-char template[] = "HTTP/1.1 200 OK\r\nContent-Length: %d\r\nContent-Type: text/html; charset=utf-8\r\n\r\n%s";
+char template[] = "HTTP/1.1 %d OK\r\nContent-Length: %d\r\nContent-Type: text/html; charset=utf-8\r\n\r\n%s";
 
 int main(void) {
     FILE *file;
@@ -26,7 +26,7 @@ int main(void) {
     fclose(file);
 
     char *response;
-    if (asprintf(&response, template, strlen(content), content) < 0)
+    if (asprintf(&response, template, 200, strlen(content), content) < 0)
         perror("Response");
 
     int server_fd, client_fd;
