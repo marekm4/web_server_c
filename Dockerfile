@@ -1,4 +1,4 @@
-FROM gcc as builder
+FROM gcc AS builder
 COPY main.c main.c
 RUN gcc -Os -static -o main main.c
 
